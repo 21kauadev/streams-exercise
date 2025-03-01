@@ -18,6 +18,7 @@ public class App {
         int n = sc.nextInt();
 
         for (int i = 0; i < n; i++) {
+            System.out.println("Data for Employee #" + (i + 1));
             System.out.print("Enter Employee name: ");
             sc.nextLine();
             String employeeName = sc.nextLine();
@@ -39,12 +40,19 @@ public class App {
         List<Employee> filteredEmployeesList = employees.stream()
                 .filter((employee) -> employee.getSalary() >= minimumSalary).collect(Collectors.toList());
 
-        System.out.printf("Email of people whose salary is more than %.2f", minimumSalary);
+        System.out.printf("Email of people whose salary is more than %.2f%n:", minimumSalary);
         filteredEmployeesList.forEach((Employee employee) -> System.out.println(employee.getEmail()));
 
-        // int sum = employees.stream().reduce((Employee previousEmployee,
-        // Employee nextEmployee) -> previousEmployee.getSalary() +
-        // nextEmployee.getSalary());
+        // pipeline aqui. (cadeia de operaçoes de stream)
+        // operações intermediarias (filter e map)
+        // operação terminal (não retorna uma stream) - reduce
+
+        double salarySum = employees.stream()
+                .filter((Employee employee) -> employee.getName().charAt(0) == 'M')
+                .map((Employee employee) -> employee.getSalary())
+                .reduce(0.0, (employeeSalary1, employeeSalary2) -> employeeSalary1 + employeeSalary2);
+
+        System.out.printf("Sum of salary of people whose name starts with 'M': %.2f%n", salarySum);
 
         sc.close();
     }
